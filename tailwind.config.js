@@ -5,6 +5,9 @@ module.exports = {
     boxSizing: false,
   },
   theme: {
+    fontFamily: {
+      sans: ['Roboto', 'sans-serif']
+    },
     extend: {},
   },
   variants: {

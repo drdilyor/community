@@ -1,11 +1,11 @@
 <template>
-  <component :is="tag" class="px-4 py-2 rounded flex" :class="buttonClass()">
+  <component :is="tag" class="rounded flex items-center uppercase text-sm font-medium" :class="buttonClass">
     <slot />
   </component>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from 'vue'
+import {defineComponent} from 'vue'
 
 export default defineComponent({
   name: 'ui-button',
@@ -14,18 +14,25 @@ export default defineComponent({
     type: {
       type: String,
       default: 'primary',
-      validator: (val: string) => ['primary', 'outline', 'flat'].includes(val)
+      validator: (val: string) => ['primary', 'stroked', 'flat', 'icon'].includes(val)
     }
   },
-  methods: {
-    // not using computed as it doesn't work with HMR
+  computed: {
     buttonClass(): string | undefined {
       return {
-        primary: 'bg-green-600 text-white hover:bg-green-700',
-        outline: 'border border-green-600 text-green-600 hover:bg-green-50',
-        flat: 'hover:text-green-600',
+        primary: 'py-2 px-4 bg-green-600 text-white hover:bg-green-500',
+        stroked: 'py-1.75 px-4 border border-gray-300 text-green-600 hover:bg-green-50',
+        flat: 'py-2 px-2 text-green-600 hover:bg-green-50',
+        icon: 'py-1.5 px-2 text-gray-600 hover:text-green-500 leading-1',
       }[this.type]
     }
   }
 })
 </script>
+
+<style>
+.py-1\.75 {
+  padding-top: 0.4375rem;
+  padding-bottom: 0.4375rem;
+}
+</style>
