@@ -1,0 +1,34 @@
+{
+  "framework": "vue",
+  "name": "community",
+  "version": "0.0.0",
+  "contributions": {
+    "html": {
+      "tags": [
+        {
+          "name": "ui-button",
+          "source": {
+            "module": "./src/components/ui/Button.vue",
+            "symbol": "default"
+          },
+          "attributes": [
+            {
+              "name": "tag",
+              "value": {
+                "kind": "expression",
+                "type": ["string"]
+              }
+            },
+            {
+              "name": "type",
+              "value": {
+                "kind": "enum",
+                "items": ["primary", "outline"]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
