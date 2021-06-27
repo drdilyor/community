@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" class="px-4 py-2 rounded border" :class="buttonClass">
+  <component :is="tag" class="px-4 py-2 rounded flex" :class="buttonClass()">
     <slot />
   </component>
 </template>
@@ -14,14 +14,16 @@ export default defineComponent({
     type: {
       type: String,
       default: 'primary',
-      validator: (val: string) => ['primary', 'outline'].includes(val)
+      validator: (val: string) => ['primary', 'outline', 'flat'].includes(val)
     }
   },
-  computed: {
+  methods: {
+    // not using computed as it doesn't work with HMR
     buttonClass(): string | undefined {
       return {
-        primary: 'bg-green-600 text-white border-green-600',
-        outline: 'border-green-600 text-green-600'
+        primary: 'bg-green-600 text-white hover:bg-green-700',
+        outline: 'border border-green-600 text-green-600 hover:bg-green-50',
+        flat: 'hover:text-green-600',
       }[this.type]
     }
   }

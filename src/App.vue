@@ -1,5 +1,6 @@
 <template>
   <app-navbar />
+  <router-view />
 </template>
 
 <script lang="ts">
