@@ -11,7 +11,11 @@ const i18n = createI18n({
   locale: 'en',
 })
 
-createApp(App)
+window.backend = import.meta.env.MODE == 'production'
+  ? '??????????????????????'
+  : 'http://localhost:34502'
+
+;(window as any).vm = createApp(App)
 .use(router)
 .use(store)
 .use(i18n)

@@ -8,7 +8,11 @@
       <ui-button class="md:hidden" type="flat">
         <i class="material-icons">search</i>
       </ui-button>
-      <ui-button>{{ $t('login') }}</ui-button>
+      <ui-button v-if="!$store.state.auth.token">
+        {{ $t('login') }}
+      </ui-button>
+      <img v-else class="rounded-full w-8 h-8"
+           :src="$store.state.auth.user.profile.picture" alt="Profile">
     </div>
   </div>
 </template>
