@@ -1,11 +1,15 @@
 <template>
-  <p>Home</p>
+  <p>Topic</p>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "PageHome",
+  name: "PageTopic"
 })
 </script>
+
+<style scoped>
+
+</style>

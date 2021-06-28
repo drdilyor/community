@@ -8,8 +8,9 @@ export interface AuthState {
 }
 
 const state: AuthState = {
-  token: null,
-  user: null,
+  token: localStorage.getItem('authToken'),
+  user: localStorage.getItem('authUser')
+    && JSON.parse(localStorage.getItem('authUser') as string),
 }
 
 const mutations: MutationTree<AuthState> = {
@@ -28,7 +29,8 @@ const actions: ActionTree<AuthState, RootState> = {
     if (res.status == 200) {
       commit('setToken', data.token as string)
       commit('setUser', data.user)
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('authToken', data.token)
+      localStorage.setItem('authUser', JSON.stringify(data.user))
       return true
     } else {
       throw new Error(data.detail.errors.general)
