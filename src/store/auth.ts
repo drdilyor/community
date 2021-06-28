@@ -1,5 +1,6 @@
 import {ActionTree, Module, MutationTree} from 'vuex'
 import {RootState} from './index'
+import api from '../api'
 
 export interface AuthState {
   token: string | null,
@@ -23,16 +24,11 @@ const mutations: MutationTree<AuthState> = {
 
 const actions: ActionTree<AuthState, RootState> = {
   async login({commit}, payload: {email: string, password: string}) {
-    let res
-    res = await fetch(`${window.backend}/sessions`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: {'Content-Type': 'application/json'},
-    })
-    const data = await res.json()
+    const [data, res] = await api.request('post', '/sessions', payload)
     if (res.status == 200) {
       commit('setToken', data.token as string)
       commit('setUser', data.user)
+      localStorage.setItem('token', data.token)
       return true
     } else {
       throw new Error(data.detail.errors.general)

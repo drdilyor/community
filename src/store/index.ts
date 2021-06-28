@@ -1,10 +1,12 @@
 import {createStore, Module} from 'vuex'
-import auth from './auth'
+import auth, {AuthState} from './auth'
 
 export interface RootState {
+  auth: AuthState,
 }
 
 const root: Module<RootState, RootState> = {
+  // @ts-ignore
   state: {
   },
   mutations: {

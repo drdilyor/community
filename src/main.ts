@@ -7,6 +7,7 @@ import ui from './components/ui/plugin'
 import store from './store'
 import router from './router'
 import messages from './messages'
+import api from './api'
 
 const i18n = createI18n({
   locale: 'en',
@@ -24,4 +25,5 @@ window.backend = import.meta.env.MODE == 'production'
 .use(store)
 .use(i18n)
 .use(ui)
+.use(api)
 .mount('#app')
