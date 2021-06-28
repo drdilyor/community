@@ -8,10 +8,10 @@
       <ui-button class="md:hidden" type="flat">
         <i class="material-icons">search</i>
       </ui-button>
-      <ui-button v-if="!$store.state.auth.token">
+      <ui-button v-if="!$store.state.auth.token" tag="router-link" to="/login">
         {{ $t('login') }}
       </ui-button>
-      <img v-else class="rounded-full w-8 h-8"
+      <img v-else class="rounded-full w-8 h-8 cursor-pointer"
            :src="$store.state.auth.user.profile.picture" alt="Profile">
     </div>
   </div>
@@ -22,12 +22,6 @@ import {defineComponent} from 'vue'
 
 export default defineComponent({
   name: "app-navbar",
-  i18n: {
-    messages: {
-      en: {login: 'Log in'},
-      uz: {login: 'Kirish'},
-    },
-  },
 })
 </script>
 

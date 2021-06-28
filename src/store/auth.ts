@@ -17,26 +17,25 @@ const mutations: MutationTree<AuthState> = {
   },
   setUser(state, user: string) {
     state.user = user
-  }
+  },
 }
 
 
 const actions: ActionTree<AuthState, RootState> = {
   async login({commit}, payload: {email: string, password: string}) {
-    try {
-      const res = await fetch(`${window.backend}/sessions`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {'Content-Type': 'application/json',},
-      })
-      if (res.status == 200) {
-        const data = await res.json()
-        commit('setToken', data.token as string)
-        commit('setUser', data.user)
-      }
-    }
-    catch(e) {
-      console.log(e)
+    let res
+    res = await fetch(`${window.backend}/sessions`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {'Content-Type': 'application/json'},
+    })
+    const data = await res.json()
+    if (res.status == 200) {
+      commit('setToken', data.token as string)
+      commit('setUser', data.user)
+      return true
+    } else {
+      throw new Error(data.detail.errors.general)
     }
   },
 }

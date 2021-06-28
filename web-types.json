@@ -6,6 +6,13 @@
     "html": {
       "tags": [
         {
+          "name": "ui-alert",
+          "source": {
+            "module": "./src/components/ui/Input.vue",
+            "symbol": "default"
+          }
+        },
+        {
           "name": "ui-button",
           "source": {
             "module": "./src/components/ui/Button.vue",
@@ -16,15 +23,16 @@
               "name": "tag",
               "value": {
                 "kind": "expression",
-                "type": ["string"]
+                "type": "string"
               }
             },
             {
               "name": "type",
               "value": {
-                "kind": "enum",
-                "items": ["primary", "outline"]
-              }
+                "kind": "expression",
+                "type": "'primary' | 'stroked' | 'flat' | 'icon'"
+              },
+              "default": "primary"
             }
           ]
         },
@@ -34,7 +42,7 @@
             "module": "./src/components/ui/Input.vue",
             "symbol": "default"
           }
-        }
+        },
       ]
     }
   }

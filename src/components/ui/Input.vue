@@ -1,5 +1,6 @@
 <template>
-  <input class="px-4 border-2 border-gray-400 rounded outline-none focus:border-green-500" :class="inputClass">
+  <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
+      class="px-4 border-2 border-gray-400 rounded outline-none focus:border-green-500" :class="inputClass">
 </template>
 
 <script lang="ts">
@@ -9,6 +10,7 @@ export default defineComponent({
   name: 'ui-input',
   props: {
     dense: {type: Boolean, default: false},
+    modelValue: {},
   },
   computed: {
     inputClass(): string {

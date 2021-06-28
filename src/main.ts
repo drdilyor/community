@@ -6,9 +6,13 @@ import './assets/styles/index.scss'
 import ui from './components/ui/plugin'
 import store from './store'
 import router from './router'
+import messages from './messages'
 
 const i18n = createI18n({
   locale: 'en',
+  messages,
+  silentTranslationWarn: true,
+  silentFallbackWarn: true,
 })
 
 window.backend = import.meta.env.MODE == 'production'

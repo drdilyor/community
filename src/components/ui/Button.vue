@@ -1,5 +1,6 @@
 <template>
-  <component :is="tag" class="rounded flex items-center uppercase text-sm font-medium" :class="buttonClass">
+  <component :is="tag" class="rounded flex items-center justify-center uppercase text-sm font-medium"
+             :class="buttonClass" type="tag == 'button' && nativeType">
     <slot />
   </component>
 </template>
@@ -15,7 +16,8 @@ export default defineComponent({
       type: String,
       default: 'primary',
       validator: (val: string) => ['primary', 'stroked', 'flat', 'icon'].includes(val)
-    }
+    },
+    nativeType: {type: String, default: 'button'},
   },
   computed: {
     buttonClass(): string | undefined {
