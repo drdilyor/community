@@ -8,6 +8,7 @@ export interface RootState {
   articles: any[],
   _articlesLoading: boolean,
   noMoreArticles: boolean,
+  homeShowTopics: boolean,
 }
 
 const root: Module<RootState, RootState> = {
@@ -17,6 +18,7 @@ const root: Module<RootState, RootState> = {
     articles: [],
     _articlesLoading: false,
     noMoreArticles: false,
+    homeShowTopics: false,
   },
   mutations: {
     setTopics(state, topics) {
@@ -30,6 +32,12 @@ const root: Module<RootState, RootState> = {
     },
     setArticlesLoading(state, value) {
       state._articlesLoading = value
+    },
+    setNoMoreArticles(state, value) {
+      state.noMoreArticles = value
+    },
+    setHomeShowTopics(state, value) {
+      state.homeShowTopics = value
     }
   },
   actions: {
@@ -53,8 +61,8 @@ const root: Module<RootState, RootState> = {
       commit('setArticlesLoading', true)
       const [data] = await api.request('get', `/posts?type=article&limit=5&page=${page}`)
       commit('pushArticles', data)
-      commit('setArticlesLoading', true)
-
+      commit('setArticlesLoading', false)
+      commit('setNoMoreArticles', data.length < 5)
       return data.length < 5
     }
   },

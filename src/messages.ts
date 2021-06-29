@@ -3,10 +3,12 @@ export default {
     login: 'Log in',
     email: 'Email',
     password: 'Password',
+    close: 'Close',
   },
   uz: {
     login: 'Kirish',
     email: 'Elektron pochta',
     password: 'Parol',
+    close: 'Yopish',
   },
 }

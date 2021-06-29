@@ -14,6 +14,7 @@
       </div>
       <div class="content mt-4" v-html="article.summary" />
     </div>
+    <ui-button class="mx-auto mb-4" type="stroked" @click="loadMore">{{ $t('more') }}</ui-button>
   </div>
 </template>
 
@@ -26,7 +27,7 @@ export default defineComponent({
     loadMore() {
       this.$store.dispatch('loadArticles')
     },
-    articleDate(date) {
+    articleDate(date: Date | string) {
       date = new Date(date)
       if (date.setHours(0,0,0,0) == new Date().setHours(0,0,0,0)) {
         return this.$t('today')
