@@ -1,8 +1,6 @@
 <template>
-  <div class="px-4">
-    <article-info v-if="article" :article="article">
-      <div class="content mt-4" v-html="article.content" />
-    </article-info>
+  <div class="mx-2">
+    <article-info v-if="article" :article="article" detailed />
   </div>
 </template>
 

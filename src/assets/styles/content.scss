@@ -17,7 +17,7 @@
     @apply font-semibold;
   }
 
-  p, h4, figure, ol, ul, pre, table {
+  p, h4, figure, ol, ul, pre, table, blockquote {
     @apply mb-2;
   }
 
@@ -88,5 +88,19 @@
   figcaption {
     @apply italic;
     @apply text-gray-600;
+  }
+  
+  a {
+    @apply text-green-600;
+  }
+  blockquote {
+    @apply p-4;
+    @apply border-green-600;
+    @apply border-l-4;
+    @apply bg-green-50;
+    @apply text-green-900;
+    > p > i {
+      @apply not-italic;
+    }
   }
 }

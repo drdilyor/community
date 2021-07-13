@@ -4,14 +4,16 @@
       <h3 class="text-xl font-medium mb-2 cursor-pointer" @click="$router.push(`/article/${article.id}`)">
         {{ article.title }}
       </h3>
-      <div class="flex">
+      <div class="flex mb-2">
         <img class="w-12 h-12 rounded-full mr-2" :src="article.user.profile.picture" alt="Profile">
         <div>
           <p class="font-medium">{{ article.user.profile.name }}</p>
           <p class="text-gray-500">{{ $t('posted') }} {{ articleDate }}</p>
         </div>
       </div>
-      <slot />
+      <article-contents v-if="detailed" :article="article" />
+      <div class="content mt-4" v-html="detailed ? article.content : article.summary">
+      </div>
       <div class="mt-2">
         <ui-button type="flat" @click="like">
           <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -28,11 +30,16 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import {defineComponent} from 'vue'
+import ArticleContents from './ArticleContents.vue'
+
+export default defineComponent({
   name: 'ArticleInfo',
+  components: {ArticleContents},
   props: {
     article: {type: Object, required: true},
+    detailed: {type: Boolean, default: false},
   },
   computed: {
     articleDate() {
@@ -49,5 +56,5 @@ export default {
       this.$store.dispatch('likeArticle', this.article)
     }
   }
-}
+})
 </script>
