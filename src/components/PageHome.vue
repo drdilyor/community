@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-2">
     <article-info v-for="article in $store.state.homeArticles" :key="article._id"
                :article="article" show-img>
       <div class="content mt-4" v-html="article.summary" />

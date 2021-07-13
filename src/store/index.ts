@@ -5,7 +5,6 @@ import router from '../router'
 
 export interface RootState {
   auth: AuthState,
-  topics: any[],
   homeArticles: any[],
   _homeArticlesLoading: boolean,
   noMoreArticles: boolean,
@@ -16,7 +15,6 @@ export interface RootState {
 const root: Module<RootState, RootState> = {
   // @ts-ignore
   state: {
-    topics: [],
     homeArticles: [],
     _homeArticlesLoading: false,
     noMoreArticles: false,
@@ -24,9 +22,6 @@ const root: Module<RootState, RootState> = {
     articlesById: {},
   },
   mutations: {
-    setTopics(state, topics) {
-      state.topics = topics
-    },
     setHomeArticles(state, articles) {
       state.homeArticles = articles
     },
@@ -52,14 +47,6 @@ const root: Module<RootState, RootState> = {
     }
   },
   actions: {
-    loadTopics({commit, state}) {
-      if (state.topics.length) return
-      api.request('get', '/topics')
-      .then(([data]) => commit('setTopics', data.filter(
-        // Only "official" topics
-        (i: any) => i.picture,
-      )))
-    },
     /// returns true if no articles left
     async loadHomeArticles({commit, state}): Promise<boolean> {
       const page = state.homeArticles.length / 5 + 1
@@ -92,8 +79,9 @@ const root: Module<RootState, RootState> = {
         article.upvoted ? 'delete' : 'post',
         `/posts/${article.id}/votes`,
       )
-      commit('setLiked', {article, newArticle: data})
-    }
+      if (res.ok)
+        commit('setLiked', {article, newArticle: data})
+    },
   },
   getters: {},
   modules: {

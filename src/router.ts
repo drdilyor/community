@@ -7,14 +7,7 @@ import Article from './components/PageArticle.vue'
 import Login from './components/PageLogin.vue'
 
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    component: Main,
-    children: [
-      {path: '', component: Home},
-      {path: 'topic/:topic', component: Topic},
-    ]
-  },
+  {path: '', component: Home},
   {path: '/user/:id', component: Profile},
   {path: '/article/:id', component: Article},
   {path: '/login', component: Login},
