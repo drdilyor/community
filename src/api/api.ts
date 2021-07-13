@@ -1,12 +1,14 @@
-import store from './store'
+import store from '../store'
 import {App} from 'vue'
+import {HttpMethod} from './types'
+import { ApiView } from '.'
 
 const api = {
   // returns data as the first element because
   // then it is possible to omit res parameter:
   //     api.request(...).then(([data]) => {...})
   async request(
-    method: 'get' | 'post' | 'put' | 'delete',
+    method: HttpMethod,
     url: string,
     json: any = null
   ): Promise<[any, Response]> {
@@ -25,10 +27,12 @@ const api = {
     options.headers = headers
     const res = await fetch(`${window.backend}/${url}`, options)
     const data = await res.json()
+    
     return [data, res]
   },
   install(app: App) {
     app.config.globalProperties.$api = api
+    app.component('api-view', ApiView)
   }
 }
 

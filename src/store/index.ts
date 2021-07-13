@@ -1,43 +1,54 @@
 import {createStore, Module} from 'vuex'
 import auth, {AuthState} from './auth'
 import api from '../api'
+import router from '../router'
 
 export interface RootState {
   auth: AuthState,
   topics: any[],
-  articles: any[],
-  _articlesLoading: boolean,
+  homeArticles: any[],
+  _homeArticlesLoading: boolean,
   noMoreArticles: boolean,
   homeShowTopics: boolean,
+  articlesById: any,
 }
 
 const root: Module<RootState, RootState> = {
   // @ts-ignore
   state: {
     topics: [],
-    articles: [],
-    _articlesLoading: false,
+    homeArticles: [],
+    _homeArticlesLoading: false,
     noMoreArticles: false,
     homeShowTopics: false,
+    articlesById: {},
   },
   mutations: {
     setTopics(state, topics) {
       state.topics = topics
     },
-    setArticles(state, articles) {
-      state.articles = articles
+    setHomeArticles(state, articles) {
+      state.homeArticles = articles
     },
-    pushArticles(state, articles) {
-      state.articles = state.articles.concat(articles)
+    pushHomeArticles(state, articles) {
+      state.homeArticles = state.homeArticles.concat(articles)
     },
-    setArticlesLoading(state, value) {
-      state._articlesLoading = value
+    setHomeArticlesLoading(state, value) {
+      state._homeArticlesLoading = value
     },
     setNoMoreArticles(state, value) {
       state.noMoreArticles = value
     },
     setHomeShowTopics(state, value) {
       state.homeShowTopics = value
+    },
+    addArticleById(state, article) {
+      state.articlesById[article._id] = article
+    },
+    setLiked(state, {article, newArticle}) {
+      article.upvoted = newArticle.upvoted
+      article.upvotes = newArticle.upvotes
+      article.counts = newArticle.counts
     }
   },
   actions: {
@@ -50,27 +61,44 @@ const root: Module<RootState, RootState> = {
       )))
     },
     /// returns true if no articles left
-    async loadArticles({commit, state}): Promise<boolean> {
-      const page = state.articles.length / 5 + 1
+    async loadHomeArticles({commit, state}): Promise<boolean> {
+      const page = state.homeArticles.length / 5 + 1
 
-      if (state._articlesLoading) return false
+      if (state._homeArticlesLoading) return false
       if (state.noMoreArticles) return true
 
-      console.assert(page == (page|0))
+      console.assert(page == (page | 0))
 
-      commit('setArticlesLoading', true)
+      commit('setHomeArticlesLoading', true)
       const [data] = await api.request('get', `/posts?type=article&limit=5&page=${page}`)
-      commit('pushArticles', data)
-      commit('setArticlesLoading', false)
+      commit('pushHomeArticles', data)
+      commit('setHomeArticlesLoading', false)
       commit('setNoMoreArticles', data.length < 5)
       return data.length < 5
+    },
+    async loadArticle({commit, state}, id: string): Promise<any> {
+      if (state.articlesById[id])
+        return state.articlesById[id]
+
+      const [data, res] = await api.request('get', `/posts/${id}`)
+      if (res.status == 404) router.push('/404')
+      commit('addArticleById', data)
+
+      return data
+    },
+    // likes or removes like from article
+    async likeArticle({commit}, article) {
+      const [data, res] = await api.request(
+        article.upvoted ? 'delete' : 'post',
+        `/posts/${article.id}/votes`,
+      )
+      commit('setLiked', {article, newArticle: data})
     }
   },
-  getters: {
-  },
+  getters: {},
   modules: {
     auth,
-  }
+  },
 }
 
 export default createStore<RootState>(root)

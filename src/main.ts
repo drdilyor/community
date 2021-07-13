@@ -19,7 +19,7 @@ const i18n = createI18n({
 })
 
 window.backend = import.meta.env.MODE == 'production'
-  ? '??????????????????????'
+  ? 'https://community-uzbekcoders.herokuapp.com'
   : 'http://localhost:34502'
 
 ;(window as any).vm = createApp(App)

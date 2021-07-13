@@ -1,7 +1,8 @@
 .content {
   h2, h3 {
-    @apply font-thin;
+    @apply font-light;
     @apply mb-4;
+    @apply mt-6;
   }
 
   h2 {
@@ -42,6 +43,7 @@
 
   pre {
     @apply px-4 py-2;
+    overflow-x: auto;
   }
 
   figure.table {
@@ -82,6 +84,7 @@
   img {
     @apply mx-auto;
   }
+
   figcaption {
     @apply italic;
     @apply text-gray-600;

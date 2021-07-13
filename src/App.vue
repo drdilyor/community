@@ -1,6 +1,8 @@
 <template>
   <app-navbar />
-  <router-view />
+  <div class="constrainted">
+    <router-view />
+  </div>
 </template>
 
 <script lang="ts">
@@ -12,3 +14,10 @@ export default defineComponent({
   components: {AppNavbar}
 })
 </script>
+
+<style>
+.constrainted {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+</style>
