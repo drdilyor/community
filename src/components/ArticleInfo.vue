@@ -8,23 +8,14 @@
         <img class="w-12 h-12 rounded-full mr-2" :src="article.user.profile.picture" alt="Profile">
         <div>
           <p class="font-medium">{{ article.user.profile.name }}</p>
-          <p class="text-gray-500">{{ $t('posted') }} {{ articleDate }}</p>
+          <p class="text-gray-500">{{ $t('posted') }} {{ $f.date(article.createdAt) }}</p>
         </div>
       </div>
       <article-contents v-if="detailed" :article="article" />
       <div class="content mt-4" v-html="detailed ? article.content : article.summary">
       </div>
       <div class="mt-2">
-        <ui-button type="flat" @click="like">
-          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path fill="currentColor" :d="
-                article.upvoted
-                ? 'M23,10C23,8.89 22.1,8 21,8H14.68L15.64,3.43C15.66,3.33 15.67,3.22 15.67,3.11C15.67,2.7 15.5,2.32 15.23,2.05L14.17,1L7.59,7.58C7.22,7.95 7,8.45 7,9V19A2,2 0 0,0 9,21H18C18.83,21 19.54,20.5 19.84,19.78L22.86,12.73C22.95,12.5 23,12.26 23,12V10M1,21H5V9H1V21Z'
-                : 'M5,9V21H1V9H5M9,21A2,2 0 0,1 7,19V9C7,8.45 7.22,7.95 7.59,7.59L14.17,1L15.23,2.06C15.5,2.33 15.67,2.7 15.67,3.11L15.64,3.43L14.69,8H21C22.11,8 23,8.9 23,10V12C23,12.26 22.95,12.5 22.86,12.73L19.84,19.78C19.54,20.5 18.83,21 18,21H9M9,19H18.03L21,12V10H12.21L13.34,4.68L9,9.03V19Z'
-              " />
-          </svg>
-          <span v-if="article.counts.upvotes" class="ml-2">{{ article.counts.upvotes }}</span>
-        </ui-button>
+        <like-button :value="article.counts.upvotes" :liked="article.upvoted" @click="like" />
       </div>
     </div>
   </div>
@@ -33,23 +24,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import ArticleContents from './ArticleContents.vue'
+import LikeButton from './LikeButton.vue'
 
 export default defineComponent({
   name: 'ArticleInfo',
-  components: {ArticleContents},
+  components: {ArticleContents, LikeButton},
   props: {
     article: {type: Object, required: true},
     detailed: {type: Boolean, default: false},
-  },
-  computed: {
-    articleDate() {
-      const date = new Date(Date.parse(this.article.createdAt))
-      if (date.setHours(0,0,0,0) == new Date().setHours(0,0,0,0)) {
-        return this.$t('today')
-      } else {
-        return date.toLocaleDateString()
-      }
-    },
   },
   methods: {
     like() {

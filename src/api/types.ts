@@ -4,4 +4,4 @@ export interface Foo {
   data: boolean,
 }
 
-export type HttpMethod = 'get' | 'post' | 'put' | 'delete',
+export type HttpMethod = 'get' | 'post' | 'put' | 'delete'

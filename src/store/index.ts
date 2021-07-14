@@ -10,6 +10,7 @@ export interface RootState {
   noMoreArticles: boolean,
   homeShowTopics: boolean,
   articlesById: any,
+  responsesByArticleId: any,
 }
 
 const root: Module<RootState, RootState> = {
@@ -20,6 +21,7 @@ const root: Module<RootState, RootState> = {
     noMoreArticles: false,
     homeShowTopics: false,
     articlesById: {},
+    responsesByArticleId: {},
   },
   mutations: {
     setHomeArticles(state, articles) {
@@ -40,10 +42,13 @@ const root: Module<RootState, RootState> = {
     addArticleById(state, article) {
       state.articlesById[article._id] = article
     },
-    setLiked(state, {article, newArticle}) {
-      article.upvoted = newArticle.upvoted
-      article.upvotes = newArticle.upvotes
-      article.counts = newArticle.counts
+    setLiked(state, {post, newPost}) {
+      post.upvoted = newPost.upvoted
+      post.upvotes = newPost.upvotes
+      post.counts = newPost.counts
+    },
+    setResponses(state, {id, responses}) {
+      state.responsesByArticleId[id] = responses
     }
   },
   actions: {
@@ -80,7 +85,21 @@ const root: Module<RootState, RootState> = {
         `/posts/${article.id}/votes`,
       )
       if (res.ok)
-        commit('setLiked', {article, newArticle: data})
+        commit('setLiked', {post: article, newPost: data})
+    },
+    async loadResponses({state, commit}, id) {
+      if (state.responsesByArticleId[id])
+        return
+      const [data, res] = await api.request('get', `/posts/${id}/responses?limit=999`)
+      commit('setResponses', {id, responses: data})
+    },
+    async likeResponse({state, commit}, response) {
+      const [data, res] = await api.request(
+        response.upvoted ? 'delete' : 'post',
+        `/posts/${response.id}/votes`,
+      )
+      if (res.ok)
+        commit('setLiked', {post: response, newPost: data})
     },
   },
   getters: {},
