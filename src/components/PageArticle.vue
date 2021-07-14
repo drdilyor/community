@@ -15,7 +15,7 @@ export default defineComponent({
   components: {ArticleInfo, ArticleResponses},
   computed: {
     article() {
-      return this.$store.state.articlesById[this.$route.params.id]
+      return this.$store.state.articlesById[''+this.$route.params.id]
     },
   },
   created() {

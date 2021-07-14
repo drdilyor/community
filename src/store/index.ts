@@ -5,10 +5,9 @@ import router from '../router'
 
 export interface RootState {
   auth: AuthState,
-  homeArticles: any[],
-  _homeArticlesLoading: boolean,
-  noMoreArticles: boolean,
-  homeShowTopics: boolean,
+  feed: any[],
+  feedLoading: boolean,
+  feedNoMore: boolean,
   articlesById: any,
   responsesByArticleId: any,
 }
@@ -16,28 +15,24 @@ export interface RootState {
 const root: Module<RootState, RootState> = {
   // @ts-ignore
   state: {
-    homeArticles: [],
-    _homeArticlesLoading: false,
-    noMoreArticles: false,
-    homeShowTopics: false,
+    feed: [],
+    feedLoading: false,
+    feedNoMore: false,
     articlesById: {},
     responsesByArticleId: {},
   },
   mutations: {
-    setHomeArticles(state, articles) {
-      state.homeArticles = articles
+    setFeed(state, articles) {
+      state.feed = articles
     },
-    pushHomeArticles(state, articles) {
-      state.homeArticles = state.homeArticles.concat(articles)
+    pushFeed(state, articles) {
+      state.feed = state.feed.concat(articles)
     },
-    setHomeArticlesLoading(state, value) {
-      state._homeArticlesLoading = value
+    setFeedLoading(state, value) {
+      state.feedLoading = value
     },
-    setNoMoreArticles(state, value) {
-      state.noMoreArticles = value
-    },
-    setHomeShowTopics(state, value) {
-      state.homeShowTopics = value
+    setFeedNoMore(state, value) {
+      state.feedNoMore = value
     },
     addArticleById(state, article) {
       state.articlesById[article._id] = article
@@ -49,23 +44,23 @@ const root: Module<RootState, RootState> = {
     },
     setResponses(state, {id, responses}) {
       state.responsesByArticleId[id] = responses
-    }
+    },
   },
   actions: {
     /// returns true if no articles left
-    async loadHomeArticles({commit, state}): Promise<boolean> {
-      const page = state.homeArticles.length / 5 + 1
+    async loadFeed({commit, state}): Promise<boolean> {
+      const page = state.feed.length / 5 + 1
 
-      if (state._homeArticlesLoading) return false
-      if (state.noMoreArticles) return true
+      if (state.feedLoading) return false
+      if (state.feedNoMore) return true
 
       console.assert(page == (page | 0))
 
-      commit('setHomeArticlesLoading', true)
+      commit('setFeedLoading', true)
       const [data] = await api.request('get', `/posts?type=article&limit=5&page=${page}`)
-      commit('pushHomeArticles', data)
-      commit('setHomeArticlesLoading', false)
-      commit('setNoMoreArticles', data.length < 5)
+      commit('pushFeed', data)
+      commit('setFeedLoading', false)
+      commit('setFeedNoMore', data.length < 5)
       return data.length < 5
     },
     async loadArticle({commit, state}, id: string): Promise<any> {

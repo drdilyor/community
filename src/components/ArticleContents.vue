@@ -33,7 +33,7 @@ export default defineComponent({
         matches.push(m)
       }
       const contents = matches.map(match => ({
-        level: match[1] - 2,
+        level: +match[1] - 2,
         text: match[2].replace(/<.*?>/g, '')
       }))
       // TODO: normalize f*** usage of headings
@@ -43,6 +43,7 @@ export default defineComponent({
     contents() {
       if (this.expanded) return this.allContents
       if (!this.needsExpand) return this.allContents
+      // @ts-ignore: Property 'slice' does not exist
       return this.allContents.slice(0, 3)
     },
     needsExpand() {

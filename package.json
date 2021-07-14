@@ -6,6 +6,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "vscode-jsonrpc": "^6.0.0",
     "vue": "^3.0.5",
     "vue-i18n": "9",
     "vue-router": "^4.0.10",

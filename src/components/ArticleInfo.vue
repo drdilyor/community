@@ -5,7 +5,7 @@
         {{ article.title }}
       </h3>
       <div class="flex mb-2">
-        <img class="w-12 h-12 rounded-full mr-2" :src="article.user.profile.picture" alt="Profile">
+        <img class="w-12 h-12 rounded-full mr-2" :src="article.user.profile.picture" alt="Profile" samesite="strict">
         <div>
           <p class="font-medium">{{ article.user.profile.name }}</p>
           <p class="text-gray-500">{{ $t('posted') }} {{ $f.date(article.createdAt) }}</p>
@@ -37,6 +37,12 @@ export default defineComponent({
     like() {
       this.$store.dispatch('likeArticle', this.article)
     }
-  }
+  },
+  i18n: {
+    messages: {
+      en: {posted: 'Posted'},
+      uz: {posted: 'Joylashtirilgan'},
+    }
+  },
 })
 </script>

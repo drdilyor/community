@@ -12,11 +12,13 @@ declare module '*.vue' {
 import {Store} from 'vuex'
 import {RootState} from './store'
 import api from './api'
+import {f} from './filters'
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $store: Store<RootState>
     $api: typeof api
+    $f: typeof f
   }
 }
 

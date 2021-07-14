@@ -23,9 +23,9 @@ export default defineComponent({
   },
   data: () => ({
     loading: true,
-    error: null,
-    data: null,
-    res: null,
+    error: null as any,
+    data: null as any,
+    res: null as Response | null,
   }),
   created() {
     api.request('get', this.url)
