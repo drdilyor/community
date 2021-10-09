@@ -3,7 +3,7 @@
 A frontend for [UzbekCoders community](https://community.uzbekcoders.uz)
 with Vue 3 + Typescript + Vite.
 
-Under development and is not deployed yet.
+Under development and is deployed to https://community-lite.netlify.app
 
 ## License
 
