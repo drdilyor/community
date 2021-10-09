@@ -20,17 +20,5 @@ export default defineComponent({
   created() {
     this.loadMore()
   },
-  i18n: {
-    messages: {
-      en: {
-        more: 'More',
-        loadMore: 'Load more',
-      },
-      uz: {
-        more: "Ko'proq",
-        loadMore: "Ko'proq yuklash",
-      },
-    }
-  }
 })
 </script>

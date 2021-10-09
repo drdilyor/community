@@ -1,4 +1,8 @@
 .content {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
   h2, h3 {
     @apply font-light;
     @apply mb-4;

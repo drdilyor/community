@@ -5,9 +5,12 @@
         {{ article.title }}
       </h3>
       <div class="flex mb-2">
-        <img class="w-12 h-12 rounded-full mr-2" :src="article.user.profile.picture" alt="Profile" samesite="strict">
+        <img class="w-12 h-12 rounded-full mr-2 cursor-pointer" :src="article.user.profile.picture" alt="Profile" samesite="strict"
+            @click="$router.push(`/user/${article.user.profile.username}`)">
         <div>
-          <p class="font-medium">{{ article.user.profile.name }}</p>
+          <router-link class="font-medium cursor-pointer" :to="`/user/${article.user.profile.username}`">
+            {{ article.user.profile.name }}
+          </router-link>
           <p class="text-gray-500">{{ $t('posted') }} {{ $f.date(article.createdAt) }}</p>
         </div>
       </div>

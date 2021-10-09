@@ -5,6 +5,7 @@ export default {
     password: 'Password',
     close: 'Close',
     today: 'today',
+    loadMore: 'Load more',
   },
   uz: {
     login: 'Kirish',
@@ -12,5 +13,6 @@ export default {
     password: 'Parol',
     close: 'Yopish',
     today: 'bugun',
+    loadMore: "Ko'proq yuklash",
   },
 }

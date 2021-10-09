@@ -10,6 +10,10 @@ export interface RootState {
   feedNoMore: boolean,
   articlesById: any,
   responsesByArticleId: any,
+  usersByUsername: any,
+  articlesByUser: any,
+  articlesByUserLoading: any,
+  articlesByUserNoMore: any,
 }
 
 const root: Module<RootState, RootState> = {
@@ -20,6 +24,10 @@ const root: Module<RootState, RootState> = {
     feedNoMore: false,
     articlesById: {},
     responsesByArticleId: {},
+    usersByUsername: {},
+    articlesByUser: {},
+    articlesByUserLoading: {},
+    articlesByUserNoMore: {},
   },
   mutations: {
     setFeed(state, articles) {
@@ -44,6 +52,23 @@ const root: Module<RootState, RootState> = {
     },
     setResponses(state, {id, responses}) {
       state.responsesByArticleId[id] = responses
+    },
+    addUserByUsername(state, user) {
+      state.usersByUsername[user.profile.username] = user
+    },
+    pushArticlesByUser(state, articles: any[]) {
+      if (!articles.length) return
+
+      // check all articles are from same user
+      console.assert(articles.every(a => a.user.id == articles[0].user.id))
+      const x = articles[0].user.id, f = state.articlesByUser
+      f[x] = f[x].concat(articles)
+    },
+    setArticlesByUserLoading(state, {userId, value}) {
+      state.articlesByUserLoading[userId] = value
+    },
+    setArticlesByUserNoMore(state, {userId, value}) {
+      state.articlesByUserNoMore[userId] = value
     },
   },
   actions: {
@@ -96,6 +121,31 @@ const root: Module<RootState, RootState> = {
       if (res.ok)
         commit('setLiked', {post: response, newPost: data})
     },
+    async loadUser({state, commit}, username: string) {
+      if (state.usersByUsername[username])
+        return
+      const [data, res] = await api.request('get', `/users/${username}`)
+      if (res.ok)
+        commit('addUserByUsername', data)
+    },
+    async loadUserArticles({state, commit}, userId: string) {
+      const articles = state.articlesByUser
+      if (!articles[userId])
+        articles[userId] = []
+      const page = articles[userId].length / 5 + 1
+
+      if (state.articlesByUserLoading[userId])
+        return
+      if (state.articlesByUserNoMore[userId])
+        return
+      console.assert(page == (page | 0))
+
+      commit('setArticlesByUserLoading', {userId, value: true})
+      const [data] = await api.request('get', `/users/${userId}/posts?type=article&limit=5&page=${page}`)
+      commit('pushArticlesByUser', data)
+      commit('setArticlesByUserLoading', {userId, value: false})
+      commit('setArticlesByUserNoMore', {userId, value: data.length < 5})
+    }
   },
   getters: {},
   modules: {
